@@ -22,8 +22,6 @@
 #include "dma.h"
 #include "spi.h"
 #include "gpio.h"
-#include "stm32f1xx_hal.h"
-#include "stm32f1xx_hal_spi.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
