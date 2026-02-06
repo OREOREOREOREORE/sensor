@@ -89,12 +89,21 @@ void Error_Handler(void);
 #define IR14_GPIO_Port GPIOB
 #define IR15_Pin GPIO_PIN_1
 #define IR15_GPIO_Port GPIOB
+#define LED1_Pin GPIO_PIN_11
+#define LED1_GPIO_Port GPIOC
 #define cs1_Pin GPIO_PIN_2
 #define cs1_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
+#define gpio_set(gpio) HAL_GPIO_WritePin(gpio##_GPIO_Port, gpio##_Pin, GPIO_PIN_SET)
+#define gpio_reset(gpio) HAL_GPIO_WritePin(gpio##_GPIO_Port, gpio##_Pin, GPIO_PIN_RESET)
+#define gpio_toggle(gpio) HAL_GPIO_TogglePin(gpio##_GPIO_Port, gpio##_Pin)
+#define gpio_read(gpio) HAL_GPIO_ReadPin(gpio##_GPIO_Port, gpio##_Pin)
 
-
+#define led_on(led) gpio_reset(led) // notice that reset the pin turns the led on
+#define led_off(led) gpio_set(led)
+#define led_toggle(led) gpio_toggle(led)
+#define btn_read(btn) !gpio_read(btn)
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
