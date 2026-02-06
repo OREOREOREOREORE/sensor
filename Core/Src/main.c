@@ -23,6 +23,7 @@
 #include "spi.h"
 #include "gpio.h"
 #include "stm32f1xx_hal.h"
+#include "stm32f1xx_hal_spi.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -40,7 +41,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define SENSOR_COUNT      16
-#define SPI_CMD_REQUEST   0x55    // Command from main board to request sensor data
+#define SPI_CMD_REQUEST   0x0055    // Command from main board to request sensor data
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -96,13 +97,18 @@ void SystemClock_Config(void);
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi){
   if (hspi == &hspi1){
      if (spi_rx_cmd == SPI_CMD_REQUEST) {
-      spi_rx_cmd = 0;
       // Transmit 16 sensor values (16-bit each) back to main board
       // Using half-word DMA since SPI is configured for 16-bit data
       HAL_SPI_Transmit_IT(&hspi1, (uint8_t*)adc_buffer, SENSOR_COUNT);
+    }else{
+      HAL_SPI_Receive_IT(&hspi1, (uint8_t*)&spi_rx_cmd,  1);
     }
-    HAL_SPI_Receive_IT(&hspi1, (uint8_t*)&spi_rx_cmd,  1);
-    HAL_Delay(1000);
+  }
+}
+
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi){
+  if (hspi == &hspi1){
+    HAL_SPI_Receive_IT(&hspi1, (uint8_t*)&spi_rx_cmd, 1);
   }
 }
 
