@@ -71,6 +71,8 @@ void Error_Handler(void);
 #define IR5_GPIO_Port GPIOA
 #define IR6_Pin GPIO_PIN_2
 #define IR6_GPIO_Port GPIOA
+#define IR7_Pin GPIO_PIN_3
+#define IR7_GPIO_Port GPIOA
 #define IR8_Pin GPIO_PIN_4
 #define IR8_GPIO_Port GPIOA
 #define IR9_Pin GPIO_PIN_5
